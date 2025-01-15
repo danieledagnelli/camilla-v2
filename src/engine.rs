@@ -1,3 +1,6 @@
+/// engine.rs
+use rand::Rng;
+
 pub struct GameOfLife {
     width: usize,
     height: usize,
@@ -13,6 +16,19 @@ impl GameOfLife {
             height,
             current_grid: vec![0; num_u64s],
             next_grid: vec![0; num_u64s],
+        }
+    }
+
+    pub fn randomize(&mut self, factor: f64) {
+        let mut rng = rand::thread_rng();
+        for row in 0..self.height {
+            for col in 0..self.width {
+                if rng.gen::<f64>() < factor {
+                    self.set_cell(row, col, true);
+                } else {
+                    self.set_cell(row, col, false);
+                }
+            }
         }
     }
 
