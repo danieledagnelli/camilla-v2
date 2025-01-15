@@ -38,7 +38,39 @@ impl eframe::App for UiApp {
             if self.simulation_running {
                 self.engine.update();
             }
-            // Rendering logic will go here in the next phases.
+
+            let grid = self.engine.get_display_grid();
+            let width = self.engine.width;
+            let height = self.engine.height;
+            let pixel_size = 5.0; // Each cell will be drawn as a 5x5 pixel square
+
+            ui.horizontal(|ui| {
+                let (rect, _response) = ui.allocate_exact_size(
+                    egui::Vec2::new(width as f32 * pixel_size, height as f32 * pixel_size),
+                    egui::Sense::hover(),
+                );
+
+                let painter = ui.painter();
+                for row in 0..height {
+                    for col in 0..width {
+                        let color = if grid[row * width + col] {
+                            egui::Color32::WHITE
+                        } else {
+                            egui::Color32::BLACK
+                        };
+                        let x = rect.min.x + col as f32 * pixel_size;
+                        let y = rect.min.y + row as f32 * pixel_size;
+                        painter.rect_filled(
+                            egui::Rect::from_min_size(
+                                egui::Pos2 { x, y },
+                                egui::Vec2::new(pixel_size, pixel_size),
+                            ),
+                            0.0,
+                            color,
+                        );
+                    }
+                }
+            });
         });
     }
 }

@@ -1,9 +1,10 @@
+
 /// engine.rs
 use rand::Rng;
 
 pub struct GameOfLife {
-    width: usize,
-    height: usize,
+    pub width: usize,
+    pub height: usize,
     current_grid: Vec<u64>,
     next_grid: Vec<u64>,
 }
@@ -76,5 +77,15 @@ impl GameOfLife {
             }
         }
         count
+    }
+
+    pub fn get_display_grid(&self) -> Vec<bool> {
+        let mut display_grid = vec![false; self.width * self.height];
+        for row in 0..self.height {
+            for col in 0..self.width {
+                display_grid[row * self.width + col] = self.get_cell(row, col);
+            }
+        }
+        display_grid
     }
 }
