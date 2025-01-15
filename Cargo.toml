@@ -1,0 +1,9 @@
+[package]
+name = "camilla-v2"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+eframe = "0.30.0"
+egui = "0.30.0"
+rayon = "1.10.0"
