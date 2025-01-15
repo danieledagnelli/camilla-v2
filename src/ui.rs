@@ -1,4 +1,3 @@
-
 /// ui.rs
 use crate::engine::GameOfLife;
 use eframe::egui;
@@ -8,6 +7,8 @@ pub struct UiApp {
     simulation_running: bool,
     simulation_speed: f32,
     random_factor: f64,
+    grid_width: usize,
+    grid_height: usize,
 }
 
 impl UiApp {
@@ -19,6 +20,8 @@ impl UiApp {
             simulation_running: false,
             simulation_speed: 10.0,
             random_factor: 0.5,
+            grid_width: 50,  // default width
+            grid_height: 50, // default height
         }
     }
 }
@@ -34,6 +37,13 @@ impl eframe::App for UiApp {
             if ui.button("Randomize Grid").clicked() {
                 self.engine.randomize(self.random_factor);
             }
+
+            ui.horizontal(|ui| {
+                ui.label("Grid Width:");
+                ui.add(egui::Slider::new(&mut self.grid_width, 10..=100));
+                ui.label("Grid Height:");
+                ui.add(egui::Slider::new(&mut self.grid_height, 10..=100));
+            });
 
             if self.simulation_running {
                 self.engine.update();
